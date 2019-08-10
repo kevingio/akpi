@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Activity;
+use App\Models\Program;
+use App\Models\Banner;
+use App\Models\Quote;
 
 class HomeController extends Controller
 {
@@ -11,9 +15,12 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Activity $activity, Program $program, Banner $banner, Quote $quote)
     {
-        $this->middleware('auth');
+        $this->program = $program;
+        $this->activity = $activity;
+        $this->banner = $banner;
+        $this->quote = $quote;
     }
 
     /**
@@ -23,6 +30,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $banners = $this->banner->latest()->take(5)->get();
+        $activities = $this->activity->latest()->take(3)->get();
+        $programs = $this->program->latest()->take(3)->get();
+        $quote = $this->quote->latest()->first();
+        return view('client.home', compact('banners', 'activities', 'programs', 'quote'));
     }
 }

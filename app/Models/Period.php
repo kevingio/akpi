@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Period extends Model
 {
-    //
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'start',
+        'end',
+    ];
 }

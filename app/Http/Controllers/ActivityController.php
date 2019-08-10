@@ -8,13 +8,24 @@ use Illuminate\Http\Request;
 class ActivityController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Activity $activity)
+    {
+        $this->activity = $activity;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $activities = $this->activity->latest()->simplePaginate(4);
+        return view('client.program.activity.index', compact('activities'));
     }
 
     /**
@@ -44,9 +55,10 @@ class ActivityController extends Controller
      * @param  \App\Models\Activity  $activity
      * @return \Illuminate\Http\Response
      */
-    public function show(Activity $activity)
+    public function show($id)
     {
-        //
+        $activity = $this->activity->findOrFail($id);
+        return view('client.program.activity.detail', compact('activity'));
     }
 
     /**

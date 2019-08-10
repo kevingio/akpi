@@ -8,13 +8,24 @@ use Illuminate\Http\Request;
 class JournalController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Journal $journal)
+    {
+        $this->journal = $journal;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $journals = $this->journal->latest()->simplePaginate(4);
+        return view('client.program.journal.index', compact('journals'));
     }
 
     /**
@@ -46,7 +57,7 @@ class JournalController extends Controller
      */
     public function show(Journal $journal)
     {
-        //
+        return view('client.program.journal.detail')->with(['journal' => $journal]);
     }
 
     /**

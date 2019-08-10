@@ -16,7 +16,7 @@ class CreateGalleriesTable extends Migration
         Schema::create('galleries', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('event_name');
-            $table->string('youtube_link');
+            $table->string('youtube_url');
             $table->timestamps();
         });
     }

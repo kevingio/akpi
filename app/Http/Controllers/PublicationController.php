@@ -8,13 +8,24 @@ use Illuminate\Http\Request;
 class PublicationController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Publication $publication)
+    {
+        $this->publication = $publication;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $publications = $this->publication->latest()->simplePaginate(4);
+        return view('client.program.publication.index', compact('publications'));
     }
 
     /**
@@ -44,9 +55,10 @@ class PublicationController extends Controller
      * @param  \App\Models\Publication  $publication
      * @return \Illuminate\Http\Response
      */
-    public function show(Publication $publication)
+    public function show($id)
     {
-        //
+        $publication = $this->publication->findOrFail($id);
+        return view('client.program.publication.detail', compact('publication'));
     }
 
     /**

@@ -8,15 +8,25 @@ use Illuminate\Http\Request;
 class GalleryController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Gallery $gallery)
+    {
+        $this->gallery = $gallery;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $gallery = $this->gallery->latest()->get();
+        return view('client.gallery', compact('gallery'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -41,10 +51,10 @@ class GalleryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Gallery  $gallery
+     * @param  \App\Models\Journal  $journal
      * @return \Illuminate\Http\Response
      */
-    public function show(Gallery $gallery)
+    public function show(Journal $journal)
     {
         //
     }
@@ -52,10 +62,10 @@ class GalleryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Gallery  $gallery
+     * @param  \App\Models\Journal  $journal
      * @return \Illuminate\Http\Response
      */
-    public function edit(Gallery $gallery)
+    public function edit(Journal $journal)
     {
         //
     }
@@ -64,10 +74,10 @@ class GalleryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Gallery  $gallery
+     * @param  \App\Models\Journal  $journal
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Gallery $gallery)
+    public function update(Request $request, Journal $journal)
     {
         //
     }
@@ -75,10 +85,10 @@ class GalleryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Gallery  $gallery
+     * @param  \App\Models\Journal  $journal
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Gallery $gallery)
+    public function destroy(Journal $journal)
     {
         //
     }

@@ -8,13 +8,24 @@ use Illuminate\Http\Request;
 class ProgramController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Program $program)
+    {
+        $this->program = $program;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $programs = $this->program->latest()->simplePaginate(4);
+        return view('client.program.index', compact('programs'));
     }
 
     /**
@@ -46,7 +57,7 @@ class ProgramController extends Controller
      */
     public function show(Program $program)
     {
-        //
+        return view('client.program.detail')->with(['program' => $program]);
     }
 
     /**
