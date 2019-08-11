@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Gallery;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Gallery;
 
 class GalleryController extends Controller
 {
@@ -25,8 +26,9 @@ class GalleryController extends Controller
     public function index()
     {
         $galleries = $this->gallery->latest()->get();
-        return view('client.gallery', compact('galleries'));
+        return view('admin.gallery.index', compact('galleries'));
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -34,7 +36,7 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.gallery.create');
     }
 
     /**
@@ -45,51 +47,57 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['youtube_url'] = str_replace("watch?v=", "embed/", $data['youtube_url']);
+        $this->gallery->create($data);
+        return redirect()->route('admin.galeri.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Journal  $journal
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Journal $journal)
+    public function show($id)
     {
-        //
+        abort(404);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Journal  $journal
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Journal $journal)
+    public function edit($id)
     {
-        //
+        abort(404);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Journal  $journal
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Journal $journal)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $this->gallery->findOrFail($id)->update($data);
+        return redirect()->route('admin.galeri.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Journal  $journal
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Journal $journal)
+    public function destroy($id)
     {
-        //
+        $this->gallery->findOrFail($id)->delete();
+        return redirect()->route('admin.galeri.index');
     }
 }

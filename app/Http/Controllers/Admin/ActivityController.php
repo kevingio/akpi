@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 
-class MemberController extends Controller
+class ActivityController extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Member $member)
+    public function __construct(Activity $activity)
     {
-        $this->member = $member;
+        $this->activity = $activity;
     }
 
     /**
@@ -25,8 +25,8 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = $this->member->orderBy('member_no')->paginate(10);
-        return view('admin.profile.member.index', compact('members'));
+        $activities = $this->activity->latest()->simplePaginate(10);
+        return view('admin.program.activity.index', compact('activities'));
     }
 
     /**
@@ -36,7 +36,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        return view('admin.profile.member.create');
+        return view('admin.program.activity.create');
     }
 
     /**
@@ -49,18 +49,18 @@ class MemberController extends Controller
     {
         $data = $request->all();
         $file = $request->file('image');
-        $data['avatar'] = 'assets/' . $file->store('members');
-        $this->member->create($data);
-        return redirect()->route('admin.anggota.index');
+        $data['image'] = 'assets/' . $file->store('activities');
+        $this->activity->create($data);
+        return redirect()->route('admin.kegiatan.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Member  $member
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Member $member)
+    public function show($id)
     {
         abort(404);
     }
@@ -68,50 +68,55 @@ class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Member  $member
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $member = $this->member->findOrFail($id);
-        return view('admin.profile.member.edit', compact('member'));
+        $activity = $this->activity->findOrFail($id);
+        return view('admin.program.activity.edit', compact('activity'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Member  $member
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $member = $this->member->findOrFail($id);
+        $activity = $this->activity->findOrFail($id);
         if($request->hasFile('image')) {
-            if(!unlink(public_path($member->avatar))) {
+            if(!unlink(public_path($activity->image))) {
                 return redirect()->back();
             }
             $file = $request->file('image');
-            $data['avatar'] = 'assets/' . $file->store('members');
+            $data['image'] = 'assets/' . $file->store('activities');
         }
-        $member->update($data);
-        return redirect()->route('admin.anggota.index');
+        $activity->update($data);
+        return redirect()->route('admin.kegiatan.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Member  $member
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $member = $this->member->findOrFail($id);
-        if(unlink(public_path($member->avatar))) {
-            $member->delete();
-            return redirect()->route('admin.anggota.index');
+        $activity = $this->activity->findOrFail($id);
+        if(file_exists($activity->image)) {
+            if(unlink(public_path($activity->image))) {
+                $activity->delete();
+                return redirect()->route('admin.kegiatan.index');
+            }
+            return redirect()->back();
+        } else {
+            $activity->delete();
+            return redirect()->route('admin.kegiatan.index');
         }
-        return redirect()->back();
     }
 }

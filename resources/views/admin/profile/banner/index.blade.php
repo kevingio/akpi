@@ -78,12 +78,12 @@
                                         class="delete"
                                         href="javascript: void(0)"
                                         onclick="event.preventDefault();
-                                                  document.getElementById('delete-form').submit();"
+                                                  document.getElementById('delete-form-{{ $banner->id }}').submit();"
                                     >
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </a>
                                 </td>
-                                <form id="delete-form" action="{{ route('admin.banner.destroy', [$banner]) }}" method="post" style="display: none;">
+                                <form id="delete-form-{{ $banner->id }}" action="{{ route('admin.banner.destroy', [$banner]) }}" method="post" style="display: none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>

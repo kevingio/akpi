@@ -4,6 +4,7 @@
 <div class="container body">
     <div class="row">
         <div class="col-md-3">
+            @include('admin.profile.sidemenu')
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Menu</h3>

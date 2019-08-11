@@ -10,7 +10,7 @@
                 <li @if(request()->is('*/anggaran-rumah-tangga') || request()->is('*/anggaran-rumah-tangga/*')) class="active" @endif><a href="{{ route('admin.anggaran-rumah-tangga.index') }}">Anggaran Rumah Tangga</a></li>
                 <li @if(request()->is('*/kode-etik') || request()->is('*/kode-etik/*')) class="active" @endif><a href="{{ route('admin.kode-etik.index') }}">Kode Etik</a></li>
                 <li @if(request()->is('*/pengurus') || request()->is('*/pengurus/*')) class="active" @endif><a href="{{ route('admin.mars.index') }}">Badan Pengurus Nasional</a></li>
-                <li @if(request()->is('*/anggota') || request()->is('*/anggota/*')) class="active" @endif><a href="{{ route('admin.mars.index') }}">Anggota</a></li>
+                <li @if(request()->is('*/anggota') || request()->is('*/anggota/*')) class="active" @endif><a href="{{ route('admin.anggota.index') }}">Anggota</a></li>
                 <li @if(request()->is('*/banner') || request()->is('*/banner/*')) class="active" @endif><a href="{{ route('admin.banner.index') }}">Slideshow</a></li>
             </div>
         </div>

@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Publication;
 
-class MemberController extends Controller
+class PublicationController extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Member $member)
+    public function __construct(Publication $publication)
     {
-        $this->member = $member;
+        $this->publication = $publication;
     }
 
     /**
@@ -25,8 +25,8 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = $this->member->orderBy('member_no')->paginate(10);
-        return view('admin.profile.member.index', compact('members'));
+        $publications = $this->publication->latest()->simplePaginate(10);
+        return view('admin.program.publication.index', compact('publications'));
     }
 
     /**
@@ -36,7 +36,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        return view('admin.profile.member.create');
+        return view('admin.program.publication.create');
     }
 
     /**
@@ -49,18 +49,18 @@ class MemberController extends Controller
     {
         $data = $request->all();
         $file = $request->file('image');
-        $data['avatar'] = 'assets/' . $file->store('members');
-        $this->member->create($data);
-        return redirect()->route('admin.anggota.index');
+        $data['image'] = 'assets/' . $file->store('publications');
+        $this->publication->create($data);
+        return redirect()->route('admin.penerbitan.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Member  $member
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Member $member)
+    public function show($id)
     {
         abort(404);
     }
@@ -68,50 +68,55 @@ class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Member  $member
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $member = $this->member->findOrFail($id);
-        return view('admin.profile.member.edit', compact('member'));
+        $publication = $this->publication->findOrFail($id);
+        return view('admin.program.publication.edit', compact('publication'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Member  $member
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $member = $this->member->findOrFail($id);
+        $publication = $this->publication->findOrFail($id);
         if($request->hasFile('image')) {
-            if(!unlink(public_path($member->avatar))) {
+            if(!unlink(public_path($publication->image))) {
                 return redirect()->back();
             }
             $file = $request->file('image');
-            $data['avatar'] = 'assets/' . $file->store('members');
+            $data['image'] = 'assets/' . $file->store('publications');
         }
-        $member->update($data);
-        return redirect()->route('admin.anggota.index');
+        $publication->update($data);
+        return redirect()->route('admin.penerbitan.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Member  $member
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $member = $this->member->findOrFail($id);
-        if(unlink(public_path($member->avatar))) {
-            $member->delete();
-            return redirect()->route('admin.anggota.index');
+        $publication = $this->publication->findOrFail($id);
+        if(file_exists($publication->image)) {
+            if(unlink(public_path($publication->image))) {
+                $publication->delete();
+                return redirect()->route('admin.penerbitan.index');
+            }
+            return redirect()->back();
+        } else {
+            $publication->delete();
+            return redirect()->route('admin.penerbitan.index');
         }
-        return redirect()->back();
     }
 }

@@ -4,18 +4,7 @@
 <div class="container body">
     <div class="row">
         <div class="col-md-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Menu</h3>
-                </div>
-                <div class="panel-body bg-panel">
-                    <div class="sidebar">
-                        <div class="nav nav-sidebar sidebar-menu">
-                            <li class="active"><a href="{{ route('admin.anggaran-dasar.show', ['pdf']) }}">Update File PDF Anggaran Dasar</a></li>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @include('admin.profile.sidemenu')
         </div>
         <div class="col-md-9">
             <div class="panel panel-default">

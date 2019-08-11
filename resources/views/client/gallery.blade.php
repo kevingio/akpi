@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="container body">
-    @foreach($gallery->chunk(2) as $data)
+    @foreach($galleries->chunk(2) as $data)
     <div class="row">
         @foreach($data as $item)
         <div class="col-md-6 text-center">

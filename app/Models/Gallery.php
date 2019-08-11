@@ -14,5 +14,6 @@ class Gallery extends Model
     protected $fillable = [
         'event_name',
         'youtube_url',
+        'event_date'
     ];
 }

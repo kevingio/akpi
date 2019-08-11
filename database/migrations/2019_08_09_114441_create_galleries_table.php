@@ -17,6 +17,7 @@ class CreateGalleriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('event_name');
             $table->string('youtube_url');
+            $table->date('event_date');
             $table->timestamps();
         });
     }

@@ -45,11 +45,19 @@ Route::prefix('/program')->group(function () {
 
 Route::prefix('admin')->middleware('auth')->name('admin.')->namespace('Admin')->group(function () {
     Route::get('/', function () { return redirect('/admin/profil-akpi/mars'); });
+    Route::resource('galeri', 'GalleryController');
     Route::prefix('profil-akpi')->group(function () {
         Route::resource('mars', 'MarsController');
         Route::resource('anggaran-dasar', 'AnggaranDasarController');
         Route::resource('anggaran-rumah-tangga', 'AnggaranRumahTanggaController');
         Route::resource('kode-etik', 'CodeEthicsController');
         Route::resource('banner', 'BannerController');
+        Route::resource('anggota', 'MemberController');
     });
+    Route::prefix('program')->group(function () {
+        Route::resource('kegiatan', 'ActivityController');
+        Route::resource('penerbitan', 'PublicationController');
+        Route::resource('journal', 'JournalController');
+    });
+    Route::resource('program', 'ProgramController');
 });

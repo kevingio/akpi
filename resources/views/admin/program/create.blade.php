@@ -4,39 +4,46 @@
 <div class="container body">
     <div class="row">
         <div class="col-md-3">
-            @include('admin.profile.sidemenu')
+            @include('admin.program.sidemenu')
         </div>
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2 class="panel-title">Tambah Gambar Slideshow</h2>
+                    <h2 class="panel-title">Tambah Program Baru</h2>
                 </div>
                 <div class="panel-body">
-                    <form action="{{ route('admin.banner.store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ url('/admin/program') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="nama">Judul Gambar</label>
-                                    <input type="text" name="title" class="form-control" autocomplete="off" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="cover">Gambar untuk slideshow</label>
-                                    <input type="file" name="image" accept="image/*" onchange="readURL(this);" required>
+                                    <h4 for="cover">Foto Program</h4>
+                                    <input type="file" name="image" onchange="readURL(this);" accept="image/*" required>
                                     <div class="pdt-md preview-gambar-program">
                                         <img src="https://dummyimage.com/200x30/ffffff/fff" id="cover" alt="Foto Profile">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-default">Tambah</button>
+                        <div class="form-group">
+                            <label>Nama Program</label>
+                            <input class="form-control" type="text" name="name" autocomplete="off" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Kegiatan</label>
+                            <input class="form-control" type="date" name="created_at" autocomplete="off" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Deskripsi</label>
+                            <textarea name="description" rows="10" class="form-control" autocomplete="off" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="post">Post</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
     function readURL(input) {
         if (input.files && input.files[0]) {
