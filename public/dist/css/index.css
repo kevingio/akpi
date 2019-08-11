@@ -549,3 +549,11 @@ p.pullright > a {
   height: 400px;
   border-color: lavender;
 }
+
+a {
+    text-decoration: none;
+}
+
+.mr-2 {
+    margin-right: 8px;
+}

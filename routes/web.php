@@ -31,6 +31,7 @@ Route::prefix('/profil-akpi')->group(function () {
     Route::get('/anggaran-dasar', function () { return view('client.profile.anggaran-dasar'); });
     Route::get('/anggaran-rumah-tangga', function () { return view('client.profile.anggaran-rumah-tangga'); });
     Route::get('/pengurus', 'CommitteeController@index');
+    Route::get('/anggota', 'HomeController@showMembers');
 });
 
 Route::prefix('/program')->group(function () {
@@ -40,4 +41,15 @@ Route::prefix('/program')->group(function () {
     Route::resource('penerbitan', 'PublicationController');
     Route::resource('journal', 'JournalController');
     Route::get('/counseling', function () { return view('client.program.counseling'); });
+});
+
+Route::prefix('admin')->middleware('auth')->name('admin.')->namespace('Admin')->group(function () {
+    Route::get('/', function () { return redirect('/admin/profil-akpi/mars'); });
+    Route::prefix('profil-akpi')->group(function () {
+        Route::resource('mars', 'MarsController');
+        Route::resource('anggaran-dasar', 'AnggaranDasarController');
+        Route::resource('anggaran-rumah-tangga', 'AnggaranRumahTanggaController');
+        Route::resource('kode-etik', 'CodeEthicsController');
+        Route::resource('banner', 'BannerController');
+    });
 });

@@ -1,11 +1,3 @@
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120511728-2"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-120511728-2');
-</script> -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -15,14 +7,27 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('/') }}">AKPI</a>
+            <a class="navbar-brand" href="{{ url('/admin') }}">AKPI</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="{{ request()->is('profil-akpi') || request()->is('profil-akpi/*') ? 'active' : '' }}"><a href="{{ url('/profil-akpi') }}">Siapakah AKPI</a></li>
-                <li class="{{ request()->is('program') || request()->is('program/*') ? 'active' : '' }}"><a href="{{ url('/program') }}">Apa yang AKPI kerjakan</a></li>
-                <li class="{{ request()->is('gallery') ? 'active' : '' }}"><a href="{{ url('gallery') }}">Galeri</a></li>
-                <li class="{{ request()->is('contact') ? 'active' : '' }}"><a href="{{ url('/contact') }}">Kontak</a></li>
+                <li class="{{ request()->is('/admin/profil-akpi') || request()->is('/admin/profil-akpi/*') ? 'active' : '' }}"><a href="{{ url('/admin/profil-akpi') }}">Siapakah AKPI</a></li>
+                <li class="{{ request()->is('/admin/program') || request()->is('/admin/program/*') ? 'active' : '' }}"><a href="{{ url('/admin/program') }}">Apa yang AKPI kerjakan</a></li>
+                <li class="{{ request()->is('/admin/galeri') ? 'active' : '' }}"><a href="{{ url('/admin/galeri') }}">Galeri</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url('/admin/ganti-password') }}">Ganti Password</a></li>
+                <li>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                     document.getElementById('logout-form').submit();">
+                        {{ __('Logout') }}
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
             </ul>
         </div>
     </div>

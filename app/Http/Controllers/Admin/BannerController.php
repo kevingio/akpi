@@ -1,12 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Banner;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BannerController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Banner $banner)
+    {
+        $this->banner = $banner;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +25,8 @@ class BannerController extends Controller
      */
     public function index()
     {
-        //
+        $banners = $this->banner->latest()->get();
+        return view('admin.profile.banner.index', compact('banners'));
     }
 
     /**
@@ -24,7 +36,7 @@ class BannerController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.profile.banner.create');
     }
 
     /**
@@ -35,7 +47,11 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $file = $request->file('image');
+        $data['path'] = 'assets/' . $file->store('banners');
+        $this->banner->create($data);
+        return redirect()->route('admin.banner.index');
     }
 
     /**
@@ -46,7 +62,7 @@ class BannerController extends Controller
      */
     public function show(Banner $banner)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -57,7 +73,7 @@ class BannerController extends Controller
      */
     public function edit(Banner $banner)
     {
-        //
+        return view('admin.profile.banner.edit')->with(['banner' => $banner]);
     }
 
     /**
@@ -69,7 +85,17 @@ class BannerController extends Controller
      */
     public function update(Request $request, Banner $banner)
     {
-        //
+        $data = $request->all();
+        if($request->hasFile('image')) {
+            if(!unlink(public_path($banner->path))) {
+                return redirect()->back();
+            }
+            $file = $request->file('image');
+            $data['path'] = 'assets/' . $file->store('banners');
+        }
+        $banner->update($data);
+        return redirect()->route('admin.banner.index');
+
     }
 
     /**
@@ -80,6 +106,10 @@ class BannerController extends Controller
      */
     public function destroy(Banner $banner)
     {
-        //
+        if(unlink(public_path($banner->path))) {
+            $banner->delete();
+            return redirect()->route('admin.banner.index');
+        }
+        return redirect()->back();
     }
 }

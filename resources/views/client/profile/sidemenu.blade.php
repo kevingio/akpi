@@ -15,8 +15,8 @@
                     <li class="{{ request()->is('profil-akpi/kode-etik') ? 'active' : '' }}"><a href="{{ url('/profil-akpi/kode-etik') }}">Kode Etik</a></li>
                     <li class="{{ request()->is('profil-akpi/pengurus') ? 'active' : '' }}"><a href="{{ url('/profil-akpi/pengurus') }}">Badan Pengurus Nasional</a></li>
                     <li class="{{ request()->is('profil-akpi/pendiri') ? 'active' : '' }}"><a href="{{ url('/profil-akpi/pendiri') }}">Pendiri</a></li>
-                    <li class="{{ request()->is('profil-akpi/anggota-kehomatan') ? 'active' : '' }}"><a href="{{ url('/profil-akpi/anggota-kehormatan') }}">Anggota Kehormatan</a></li>
-                    <li class="{{ request()->is('profil-akpi/pastoral-counselor') ? 'active' : '' }}"><a href="{{ url('/profil-akpi/pastoral-counselor') }}">Pastoral Counselor</a></li>
+                    <li class="{{ (request()->is('profil-akpi/anggota') || request()->is('profil-akpi/anggota/*') ) && request()->type == 'anggota-kehormatan' ? 'active' : '' }}"><a href="{{ url('/profil-akpi/anggota?type=anggota-kehormatan') }}">Anggota Kehormatan</a></li>
+                    <li class="{{ (request()->is('profil-akpi/anggota') || request()->is('profil-akpi/anggota/*') ) && request()->type == 'pastoral-counselor' ? 'active' : '' }}"><a href="{{ url('/profil-akpi/anggota?type=pastoral-counselor') }}">Pastoral Counselor</a></li>
                 </div>
             </div>
         </div>

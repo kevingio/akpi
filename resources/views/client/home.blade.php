@@ -8,13 +8,15 @@
         <div class="carousel slide" id="myCarousel" data-ride="carousel">
             <ol class="carousel-indicators">
                 @foreach($banners as $key => $banner)
-                <li data-target="#myCarousel" data-slide-to="{{ $key }}" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="{{ $key }}" @if($loop->first) class="active" @endif></li>
                 @endforeach
             </ol>
             <div class="carousel-inner" style="min-height: 500px;">
                 @foreach($banners as $key => $banner)
-                <div class="item @if($loop->first) 'active' @endif">
-                    <center><img src="{{ $banner->image }}" alt="Gambar {{ $key + 1 }}" style="margin:auto;" ></center>
+                <div class="item @if($loop->first) active @endif">
+                    <center>
+                        <img src="{{ asset($banner->path) }}" alt="Gambar {{ $key + 1 }}" style="margin:auto;" >
+                    </center>
                     <div class="carousel-caption d-none d-md-block text-right">
                         <h2>{{ $banner->name }}</h2>
                         <p>{{ date('l, d F Y', strtotime($banner->created_at)) }}</p>

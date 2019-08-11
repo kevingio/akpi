@@ -12,7 +12,7 @@
                     <h2 class="panel-title">Kode Etik</h2>
                 </div>
                 <div class="panel-body">
-                    <object width="100%" height="862px" data="https://docs.google.com/gview?embedded=true&url=http://iapcakpi.org/dist/src/etik.pdf"></object>
+                    <object width="100%" height="862px" data="https://docs.google.com/gview?embedded=true&url={{ asset('assets/src/etik.pdf') }}"></object>
                 </div>
             </div>
         </div>

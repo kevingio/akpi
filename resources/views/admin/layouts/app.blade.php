@@ -9,9 +9,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    @include('layouts.parts.header')
+    @include('admin.layouts.parts.header')
     @yield('content')
-    @include('layouts.parts.footer')
+    @include('admin.layouts.parts.footer')
     <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
 </html>

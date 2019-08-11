@@ -12,7 +12,7 @@
                     <h2 class="panel-title">Anggaran Rumah Tangga</h2>
                 </div>
                 <div class="panel-body">
-                    <object width="100%" height="862px" data="https://docs.google.com/gview?embedded=true&url=http://iapcakpi.org/dist/src/adrt.pdf"></object>
+                    <object width="100%" height="862px" data="https://docs.google.com/gview?embedded=true&url={{ asset('assets/src/adrt.pdf') }}"></object>
                 </div>
             </div>
         </div>

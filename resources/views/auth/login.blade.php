@@ -32,11 +32,16 @@
         <div class="login-panel">
             <div class="">
                 <div class="panel-body">
+                    @if($errors->any())
+                        @foreach ($errors->all() as $error)
+                           <h6 class="text-danger">{{ $error }}</h1>
+                        @endforeach
+                    @endif
                     <form action="{{ route('login') }}" method="post">
                         @csrf
                         <div class="form-group">
                             <label for="usr">Username</label>
-                            <input type="text" class="form-control" name="username" required>
+                            <input type="text" class="form-control" name="username" autocomplete="off" required>
                         </div>
                         <div class="form-group">
                             <label for="pwd">Password</label>
