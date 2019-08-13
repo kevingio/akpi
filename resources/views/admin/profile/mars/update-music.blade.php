@@ -32,7 +32,7 @@
                             <label for="email">File MP3:</label>
                             <input type="file" name="data" accept=".mp3" required>
                         </div>
-                        <button type="submit" class="btn btn-default">Upload</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
                     </form>
                 </div>
             </div>

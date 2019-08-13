@@ -32,7 +32,7 @@
                             <label for="email">File PDF:</label>
                             <input type="file" name="data" accept="application/pdf" required>
                         </div>
-                        <button type="submit" class="btn btn-default">Upload</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
                     </form>
                 </div>
             </div>

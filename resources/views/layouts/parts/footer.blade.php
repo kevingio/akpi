@@ -14,11 +14,11 @@
             <div class="col-md-12 text-center" style="margin-top: 20px;">
                 <p>
                     <strong>Online: </strong>
-                    1.000
+                    {{ $onlineUsers }} {{ $onlineUsers > 1 ? 'users' : 'user' }}
                 </p>
                 <p>
                     <strong>Total Visit: </strong>
-                    100 visit
+                    {{ number_format($visitors,null,'','.') }} visit
                 </p>
             </div>
         </div>

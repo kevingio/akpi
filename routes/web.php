@@ -45,6 +45,8 @@ Route::prefix('/program')->group(function () {
 
 Route::prefix('admin')->middleware('auth')->name('admin.')->namespace('Admin')->group(function () {
     Route::get('/', function () { return redirect('/admin/profil-akpi/mars'); });
+    Route::get('/ganti-password', function () { return view('admin.change-password'); });
+    Route::post('/ganti-password', 'HomeController@updatePassword');
     Route::resource('galeri', 'GalleryController');
     Route::prefix('profil-akpi')->group(function () {
         Route::resource('mars', 'MarsController');
@@ -53,6 +55,7 @@ Route::prefix('admin')->middleware('auth')->name('admin.')->namespace('Admin')->
         Route::resource('kode-etik', 'CodeEthicsController');
         Route::resource('banner', 'BannerController');
         Route::resource('anggota', 'MemberController');
+        Route::resource('pengurus', 'CommitteeController');
     });
     Route::prefix('program')->group(function () {
         Route::resource('kegiatan', 'ActivityController');

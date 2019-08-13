@@ -20,4 +20,14 @@ class Member extends Model
         'status',
         'avatar',
     ];
+
+    /**
+     * Relation to Committee
+     *
+     * @var array
+     */
+    public function committee()
+    {
+        return $this->hasMany(Committee::class);
+    }
 }

@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-default">Tambah</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
                     </form>
                 </div>
             </div>

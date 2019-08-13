@@ -15,4 +15,14 @@ class Position extends Model
         'name',
         'weight',
     ];
+
+    /**
+     * Relation to Committee
+     *
+     * @var array
+     */
+    public function committee()
+    {
+        return $this->hasMany(Committee::class);
+    }
 }

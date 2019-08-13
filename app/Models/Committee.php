@@ -14,7 +14,7 @@ class Committee extends Model
     protected $fillable = [
         'position_id',
         'member_id',
-        'periode_id',
+        'period_id',
     ];
 
     /**
