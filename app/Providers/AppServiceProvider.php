@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         $onlineUsers = sizeof(DB::table('sessions')->selectRaw('count(*)')
-                                            ->where('last_activity', '<=', strtotime('-3 minutes'))
+                                            ->where('last_activity', '>', strtotime('-3 minutes'))
                                             ->groupBy('ip_address')
                                             ->get());
         $visitors = DB::table('sessions')->selectRaw('count(*) as total')->count();
