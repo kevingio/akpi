@@ -11,7 +11,7 @@
                 <li data-target="#myCarousel" data-slide-to="{{ $key }}" @if($loop->first) class="active" @endif></li>
                 @endforeach
             </ol>
-            <div class="carousel-inner" style="min-height: 500px;">
+            <div class="carousel-inner">
                 @foreach($banners as $key => $banner)
                 <div class="item @if($loop->first) active @endif">
                     <center>
@@ -44,7 +44,7 @@
                         <h3>KEGIATAN</h3>
                         <div>
                             @foreach($activities as $activity)
-                            <a href="{{ url('/program/kegiatan/') . $activity->id }}">
+                            <a href="{{ route('kegiatan.show', [$activity->id]) }}">
                                 <div class="article">
                                     <div class="article-image">
                                         <img src="{{ $activity->image }}" alt="foto artikel">
@@ -66,7 +66,7 @@
                     </div>
                     <div>
                         @foreach($programs as $program)
-                        <a href="{{ url('/program/detail/') . $program->id }}">
+                        <a href="{{ url('program/detail/' . $program->id) }}">
                             <div class="article">
                                 <div class="article-image">
                                     <img src="{{ $program->image }}" alt="foto artikel">

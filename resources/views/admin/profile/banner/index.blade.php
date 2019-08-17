@@ -30,7 +30,7 @@
                             <li data-target="#myCarousel" data-slide-to="{{ $key }}" @if($loop->first) class="active" @endif></li>
                             @endforeach
                         </ol>
-                        <div class="carousel-inner" style="min-height: 500px;">
+                        <div class="carousel-inner">
                             @foreach($banners as $key => $banner)
                             <div class="item @if($loop->first) active @endif">
                                 <center>
