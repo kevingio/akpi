@@ -12,6 +12,7 @@
                 <li @if(request()->is('*/pengurus') || request()->is('*/pengurus/*')) class="active" @endif><a href="{{ route('admin.pengurus.index') }}">Badan Pengurus Nasional</a></li>
                 <li @if(request()->is('*/anggota') || request()->is('*/anggota/*')) class="active" @endif><a href="{{ route('admin.anggota.index') }}">Anggota</a></li>
                 <li @if(request()->is('*/banner') || request()->is('*/banner/*')) class="active" @endif><a href="{{ route('admin.banner.index') }}">Slideshow</a></li>
+                <li @if(request()->is('*/quote') || request()->is('*/quote/*')) class="active" @endif><a href="{{ route('admin.quote.index') }}">Quote of the week</a></li>
             </div>
         </div>
     </div>

@@ -1,12 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Quote;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class QuoteController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Quote $quote)
+    {
+        $this->quote = $quote;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +25,8 @@ class QuoteController extends Controller
      */
     public function index()
     {
-        //
+        $quotes = $this->quote->latest()->paginate(3);
+        return view('admin.profile.quote.index', compact('quotes'));
     }
 
     /**
@@ -24,7 +36,7 @@ class QuoteController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.profile.quote.create');
     }
 
     /**
@@ -35,7 +47,11 @@ class QuoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $file = $request->file('image');
+        $data['image'] = 'assets/' . $file->store('quotes');
+        $this->quote->create($data);
+        return redirect()->route('admin.quote.index');
     }
 
     /**
@@ -46,7 +62,7 @@ class QuoteController extends Controller
      */
     public function show(Quote $quote)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -57,7 +73,7 @@ class QuoteController extends Controller
      */
     public function edit(Quote $quote)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -69,7 +85,7 @@ class QuoteController extends Controller
      */
     public function update(Request $request, Quote $quote)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -80,6 +96,10 @@ class QuoteController extends Controller
      */
     public function destroy(Quote $quote)
     {
-        //
+        if(unlink(public_path($quote->image))) {
+            $quote->delete();
+            return redirect()->route('admin.quote.index');
+        }
+        return redirect()->back();
     }
 }

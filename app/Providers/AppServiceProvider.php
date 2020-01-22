@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
                                             ->groupBy('ip_address')
                                             ->get());
         $visitors = DB::table('sessions')->selectRaw('count(*) as total')->count();
-        view()->share ('onlineUsers', $onlineUsers);
-        view()->share ('visitors', $visitors);
+        view()->share('onlineUsers', $onlineUsers);
+        view()->share('visitors', $visitors);
     }
 }

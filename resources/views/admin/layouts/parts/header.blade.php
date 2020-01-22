@@ -11,9 +11,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="{{ request()->is('/admin/profil-akpi') || request()->is('/admin/profil-akpi/*') ? 'active' : '' }}"><a href="{{ url('/admin/profil-akpi/mars') }}">Siapakah AKPI</a></li>
-                <li class="{{ request()->is('/admin/program') || request()->is('/admin/program/*') ? 'active' : '' }}"><a href="{{ url('/admin/program') }}">Apa yang AKPI kerjakan</a></li>
-                <li class="{{ request()->is('/admin/galeri') ? 'active' : '' }}"><a href="{{ url('/admin/galeri') }}">Galeri</a></li>
+                <li class="{{ request()->is('admin/profil-akpi') || request()->is('admin/profil-akpi/*') ? 'active' : '' }}"><a href="{{ url('/admin/profil-akpi/mars') }}">Siapakah AKPI</a></li>
+                <li class="{{ request()->is('admin/program') || request()->is('admin/program/*') ? 'active' : '' }}"><a href="{{ url('/admin/program') }}">Apa yang AKPI kerjakan</a></li>
+                <li class="{{ request()->is('admin/galeri') ? 'active' : '' }}"><a href="{{ url('/admin/galeri') }}">Galeri</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ url('/admin/ganti-password') }}">Ganti Password</a></li>
