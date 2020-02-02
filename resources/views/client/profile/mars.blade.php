@@ -12,10 +12,10 @@
                     <h2 class="panel-title">Mars AKPI</h2>
                 </div>
                 <div class="panel-body">
-                    <object width="100%" height="720px" data="https://docs.google.com/gview?embedded=true&url={{ asset('assets/src/mars.pdf') }}"></object>
+                    <object width="100%" height="720px" data="https://docs.google.com/gview?embedded=true&url={{ asset('storage/src/mars.pdf') }}"></object>
                     <div class="mgb-md"></div>
                     <h4>Preview Audio Mars</h4>
-                    <audio controls src="{{ asset('assets/src/mars.mp3') }}"></audio>
+                    <audio controls src="{{ asset('storage/src/mars.mp3') }}"></audio>
                 </div>
             </div>
         </div>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Quote;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Image;
 
 class QuoteController extends Controller
 {
@@ -47,9 +49,15 @@ class QuoteController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
         $data = $request->all();
-        $file = $request->file('image');
-        $data['image'] = 'assets/' . $file->store('quotes');
+
+        $image = $request->file('image');
+        $filename = date('YmdHis') . str_random(20) . '.jpg';
+        $file = Image::make($image->getRealPath())->encode('jpg');
+        $data['image'] = $image->storeAs('public/quotes', $filename);
         $this->quote->create($data);
         return redirect()->route('admin.quote.index');
     }
@@ -96,10 +104,8 @@ class QuoteController extends Controller
      */
     public function destroy(Quote $quote)
     {
-        if(unlink(public_path($quote->image))) {
-            $quote->delete();
-            return redirect()->route('admin.quote.index');
-        }
-        return redirect()->back();
+        Storage::delete(str_replace('storage', 'public', $quote->image));
+        $quote->delete();
+        return redirect()->route('admin.quote.index');
     }
 }

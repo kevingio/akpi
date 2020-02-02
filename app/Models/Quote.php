@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Quote extends Model
 {
@@ -15,4 +16,17 @@ class Quote extends Model
         'author',
         'image'
     ];
+
+    /**
+     * Get the image.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getImageAttribute($value)
+    {
+        if ($value) {
+            return Storage::url($value);
+        }
+    }
 }

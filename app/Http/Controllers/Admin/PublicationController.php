@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Publication;
+use Illuminate\Support\Facades\Storage;
+use Image;
 
 class PublicationController extends Controller
 {
@@ -48,9 +50,10 @@ class PublicationController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $file = $request->file('image');
-        $data['image'] = 'assets/' . $file->store('publications');
-        $this->publication->create($data);
+        $image = $request->file('image');
+        $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+        $file = Image::make($image->getRealPath());
+        $data['image'] = $image->storeAs('public/publications', $filename);
         return redirect()->route('admin.penerbitan.index');
     }
 
@@ -89,11 +92,12 @@ class PublicationController extends Controller
         $data = $request->all();
         $publication = $this->publication->findOrFail($id);
         if($request->hasFile('image')) {
-            if(!unlink(public_path($publication->image))) {
-                return redirect()->back();
-            }
-            $file = $request->file('image');
-            $data['image'] = 'assets/' . $file->store('publications');
+            $image = $request->file('image');
+            $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+            $path = 'public/publications/' . $filename;
+            $file = Image::make($image->getRealPath());
+            Storage::delete(str_replace('storage', 'public', $publication->image));
+            $data['image'] = $image->storeAs('public/publications', $filename);
         }
         $publication->update($data);
         return redirect()->route('admin.penerbitan.index');
@@ -108,15 +112,8 @@ class PublicationController extends Controller
     public function destroy($id)
     {
         $publication = $this->publication->findOrFail($id);
-        if(file_exists($publication->image)) {
-            if(unlink(public_path($publication->image))) {
-                $publication->delete();
-                return redirect()->route('admin.penerbitan.index');
-            }
-            return redirect()->back();
-        } else {
-            $publication->delete();
-            return redirect()->route('admin.penerbitan.index');
-        }
+        Storage::delete(str_replace('storage', 'public', $publication->image));
+        $publication->delete();
+        return redirect()->route('admin.penerbitan.index');
     }
 }

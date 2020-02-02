@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Image;
 
 class MemberController extends Controller
 {
@@ -47,9 +49,14 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
         $data = $request->all();
-        $file = $request->file('image');
-        $data['avatar'] = 'assets/' . $file->store('members');
+        $image = $request->file('image');
+        $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+        $file = Image::make($image->getRealPath());
+        $data['avatar'] = $image->storeAs('public/members', $filename);
         $this->member->create($data);
         return redirect()->route('admin.anggota.index');
     }
@@ -89,11 +96,16 @@ class MemberController extends Controller
         $data = $request->all();
         $member = $this->member->findOrFail($id);
         if($request->hasFile('image')) {
-            if(!unlink(public_path($member->avatar))) {
-                return redirect()->back();
-            }
-            $file = $request->file('image');
-            $data['avatar'] = 'assets/' . $file->store('members');
+            $this->validate($request, [
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+            $data = $request->all();
+            $image = $request->file('image');
+            $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+            $path = 'public/members/' . $filename;
+            $file = Image::make($image->getRealPath());
+            Storage::delete(str_replace('storage', 'public', $member->avatar));
+            $data['avatar'] = $image->storeAs('public/members', $filename);
         }
         $member->update($data);
         return redirect()->route('admin.anggota.index');
@@ -108,10 +120,8 @@ class MemberController extends Controller
     public function destroy($id)
     {
         $member = $this->member->findOrFail($id);
-        if(unlink(public_path($member->avatar))) {
-            $member->delete();
-            return redirect()->route('admin.anggota.index');
-        }
-        return redirect()->back();
+        Storage::delete(str_replace('storage', 'public', $member->avatar));
+        $member->delete();
+        return redirect()->route('admin.anggota.index');
     }
 }

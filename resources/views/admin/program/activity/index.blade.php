@@ -61,7 +61,7 @@
                         </tbody>
                     </table>
                     <div class="text-center d-block">
-                        {{ $members->links() }}
+                        {{ $activities->links() }}
                     </div>
                 </div>
             </div>

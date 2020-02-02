@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Member extends Model
 {
@@ -29,5 +30,18 @@ class Member extends Model
     public function committee()
     {
         return $this->hasMany(Committee::class);
+    }
+
+    /**
+     * Get the image.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getAvatarAttribute($value)
+    {
+        if ($value) {
+            return Storage::url($value);
+        }
     }
 }

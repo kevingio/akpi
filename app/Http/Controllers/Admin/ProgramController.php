@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Program;
+use Illuminate\Support\Facades\Storage;
+use Image;
 
 class ProgramController extends Controller
 {
@@ -47,9 +49,14 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
         $data = $request->all();
-        $file = $request->file('image');
-        $data['image'] = 'assets/' . $file->store('programs');
+        $image = $request->file('image');
+        $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+        $file = Image::make($image->getRealPath());
+        $data['image'] = $image->storeAs('public/programs', $filename);
         $this->program->create($data);
         return redirect()->route('admin.program.index');
     }
@@ -89,11 +96,16 @@ class ProgramController extends Controller
         $data = $request->all();
         $program = $this->program->findOrFail($id);
         if($request->hasFile('image')) {
-            if(!unlink(public_path($program->image))) {
-                return redirect()->back();
-            }
-            $file = $request->file('image');
-            $data['image'] = 'assets/' . $file->store('programs');
+            $this->validate($request, [
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+
+            $data = $request->all();
+            $image = $request->file('image');
+            $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+            $file = Image::make($image->getRealPath());
+            Storage::delete(str_replace('storage', 'public', $program->image));
+            $data['image'] = $image->storeAs('public/programs', $filename);
         }
         $program->update($data);
         return redirect()->route('admin.program.index');
@@ -108,15 +120,8 @@ class ProgramController extends Controller
     public function destroy($id)
     {
         $program = $this->program->findOrFail($id);
-        if(file_exists($program->image)) {
-            if(unlink(public_path($program->image))) {
-                $program->delete();
-                return redirect()->route('admin.program.index');
-            }
-            return redirect()->back();
-        } else {
-            $program->delete();
-            return redirect()->route('admin.program.index');
-        }
+        Storage::delete(str_replace('storage', 'public', $program->image));
+        $program->delete();
+        return redirect()->route('admin.program.index');
     }
 }

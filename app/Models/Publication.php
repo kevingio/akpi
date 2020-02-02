@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Publication extends Model
 {
@@ -16,4 +17,17 @@ class Publication extends Model
         'description',
         'image',
     ];
+
+    /**
+     * Get the image.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getImageAttribute($value)
+    {
+        if ($value) {
+            return Storage::url($value);
+        }
+    }
 }

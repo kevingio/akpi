@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Journal;
+use Illuminate\Support\Facades\Storage;
+use Image;
 
 class JournalController extends Controller
 {
@@ -47,11 +49,20 @@ class JournalController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'pdf' => 'required|mimes:pdf',
+        ]);
         $data = $request->all();
-        $file = $request->file('image');
+        $image = $request->file('image');
+        $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+        $file = Image::make($image->getRealPath());
+        $data['thumbnail'] = $image->storeAs('public/journals/thumbnail', $filename);
+        
         $filePdf = $request->file('pdf');
-        $data['thumbnail'] = 'assets/' . $file->store('journals/thumbnails');
-        $data['path'] = 'assets/' . $filePdf->store('journals');
+        $filename = date('YmdHis') . str_random(20) . '.' . $filePdf->extension();
+        $data['path'] = $filePdf->storeAs('public/journals', $filename);
+        
         $this->journal->create($data);
         return redirect()->route('admin.journal.index');
     }
@@ -91,19 +102,17 @@ class JournalController extends Controller
         $data = $request->all();
         $journal = $this->journal->findOrFail($id);
         if($request->hasFile('image')) {
-            if(!unlink(public_path($journal->thumbnail))) {
-                return redirect()->back();
-            }
-            $file = $request->file('image');
-            $data['thumbnail'] = 'assets/' . $file->store('journals/thumbnails');
-
+            $image = $request->file('image');
+            $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+            $file = Image::make($image->getRealPath());
+            Storage::delete(str_replace('storage', 'public', $journal->thumbnail));
+            $data['thumbnail'] = $image->storeAs('public/journals/thumbnails', $filename);
         }
         if($request->hasFile('pdf')) {
-            if(!unlink(public_path($journal->path))) {
-                return redirect()->back();
-            }
             $filePdf = $request->file('pdf');
-            $data['path'] = 'assets/' . $file->store('journals');
+            $filename = date('YmdHis') . str_random(20) . '.' . $filePdf->extension();
+            Storage::delete(str_replace('storage', 'public', $journal->path));
+            $data['path'] = $filePdf->storeAs('public/journals', $filename);
         }
         $journal->update($data);
         return redirect()->route('admin.journal.index');
@@ -118,15 +127,9 @@ class JournalController extends Controller
     public function destroy($id)
     {
         $journal = $this->journal->findOrFail($id);
-        if(file_exists($journal->thumbnail) || file_exists($journal->path) ) {
-            if(unlink(public_path($journal->thumbnail)) && unlink(public_path($journal->path))) {
-                $journal->delete();
-                return redirect()->route('admin.journal.index');
-            }
-            return redirect()->back();
-        } else {
-            $journal->delete();
-            return redirect()->route('admin.journal.index');
-        }
+        Storage::delete(str_replace('storage', 'public', $journal->path));
+        Storage::delete(str_replace('storage', 'public', $journal->thumbnail));
+        $journal->delete();
+        return redirect()->route('admin.journal.index');
     }
 }

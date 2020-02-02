@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Banner extends Model
 {
@@ -15,4 +16,17 @@ class Banner extends Model
         'title',
         'path',
     ];
+
+    /**
+     * Get the image.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getPathAttribute($value)
+    {
+        if ($value) {
+            return Storage::url($value);
+        }
+    }
 }

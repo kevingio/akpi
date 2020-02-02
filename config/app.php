@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         Rainwater\Active\ActiveServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -226,6 +227,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Active' => Rainwater\Active\ActiveFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

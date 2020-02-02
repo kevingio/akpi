@@ -47,7 +47,7 @@
                             <a href="{{ route('kegiatan.show', [$activity->id]) }}">
                                 <div class="article">
                                     <div class="article-image">
-                                        <img src="{{ $activity->image }}" alt="foto artikel">
+                                        <img src="{{ asset($activity->image) }}" alt="foto artikel">
                                     </div>
                                     <div class="article-content">
                                         <h3>{{ $activity->name }}</h3>
@@ -69,7 +69,7 @@
                         <a href="{{ url('program/detail/' . $program->id) }}">
                             <div class="article">
                                 <div class="article-image">
-                                    <img src="{{ $program->image }}" alt="foto artikel">
+                                    <img src="{{ asset($program->image) }}" alt="foto artikel">
                                 </div>
                                 <div class="article-content">
                                     <h3>{{ $program->name }}</h3>

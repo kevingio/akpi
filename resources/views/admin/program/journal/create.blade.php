@@ -29,7 +29,7 @@
                                     <h4 for="cover">File Journal (.pdf)</h4>
                                     <input type="file" name="pdf" onchange="readPDF(this);" accept="application/pdf" required>
                                     <div class="pdt-md preview-gambar-program">
-                                        <object data="{{ asset('assets/src/mars.pdf') }}" type="application/pdf" style="display: none;" width="100%" height="333px" id="pdf"></object>
+                                        <object data="{{ asset('storage/src/mars.pdf') }}" type="application/pdf" style="display: none;" width="100%" height="333px" id="pdf"></object>
                                     </div>
                                 </div>
                             </div>
