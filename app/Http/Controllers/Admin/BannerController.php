@@ -48,8 +48,16 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $file = $request->file('image');
-        $data['path'] = 'assets/' . $file->store('banners');
+        if($request->hasFile('image')) {
+            $this->validate($request, [
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+            $data = $request->all();
+            $image = $request->file('image');
+            $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+            $file = Image::make($image->getRealPath());
+            $data['path'] = $image->storeAs('public/banners', $filename);
+        }
         $this->banner->create($data);
         return redirect()->route('admin.banner.index');
     }
@@ -87,11 +95,14 @@ class BannerController extends Controller
     {
         $data = $request->all();
         if($request->hasFile('image')) {
-            if(!unlink(public_path($banner->path))) {
-                return redirect()->back();
-            }
-            $file = $request->file('image');
-            $data['path'] = 'assets/' . $file->store('banners');
+            $this->validate($request, [
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+            $image = $request->file('image');
+            $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
+            $file = Image::make($image->getRealPath());
+            Storage::delete(str_replace('storage', 'public', $banner->path));
+            $data['path'] = $image->storeAs('public/banners', $filename);
         }
         $banner->update($data);
         return redirect()->route('admin.banner.index');
@@ -106,10 +117,8 @@ class BannerController extends Controller
      */
     public function destroy(Banner $banner)
     {
-        if(unlink(public_path($banner->path))) {
-            $banner->delete();
-            return redirect()->route('admin.banner.index');
-        }
-        return redirect()->back();
+        Storage::delete(str_replace('storage', 'public', $banner->path));
+        $banner->delete();
+        return redirect()->route('admin.banner.index');
     }
 }

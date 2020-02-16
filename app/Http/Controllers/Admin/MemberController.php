@@ -99,10 +99,8 @@ class MemberController extends Controller
             $this->validate($request, [
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             ]);
-            $data = $request->all();
             $image = $request->file('image');
             $filename = date('YmdHis') . str_random(20) . '.' . $image->extension();
-            $path = 'public/members/' . $filename;
             $file = Image::make($image->getRealPath());
             Storage::delete(str_replace('storage', 'public', $member->avatar));
             $data['avatar'] = $image->storeAs('public/members', $filename);
