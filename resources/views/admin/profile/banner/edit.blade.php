@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="cover">Gambar untuk slideshow</label>
-                                    <input type="file" name="data" onchange="readURL(this);">
+                                    <input type="file" name="image" accept="image/*" onchange="readURL(this);">
                                     <div class="pdt-md preview-gambar-program">
                                         <img src="{{ asset($banner->path) }}" id="cover" alt="Gambar">
                                     </div>
